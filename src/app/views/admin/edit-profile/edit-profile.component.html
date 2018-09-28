@@ -1,0 +1,73 @@
+
+<div class="layout-content-body">
+    <div class="title-bar">
+        <h1 class="title-bar-title">
+          <span class="d-ib">Edit Profile</span>
+          <!-- <a href="profile.php">Back</a> -->
+        </h1>
+        <!-- <p class="title-bar-description">
+            <small>Welcome to 365 Fuel</small>
+        </p> -->
+    </div>
+
+    <div class="row gutter-xs">
+        <div class="col-md-12 card panel-body">
+            <div class="col-sm-12 col-md-12">
+              <div class="demo-form-wrapper">
+                <form [formGroup]="profileForm" class="form form-horizontal" enctype="multipart/form-data" >
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="name" class=" control-label">Name</label>
+                            <input name="name" class="form-control" formControlName="name" type="text">
+                            <!-- <small *ngIf="name.invalid && name.touched" class="text-danger">This field is required</small> -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="email" class=" control-label">Email</label>
+                            <input formControlName="email" name="email" class="form-control" type="text">
+                            <!-- <small *ngIf="email.invalid && email.touched" class="text-danger">This field is required</small> -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="mobile_number" class=" control-label">Phone</label>
+
+                            <input formControlName="mobile_number" name="mobile_number" class="form-control" type="text">
+                            <!-- <small *ngIf="mobile_number.invalid && mobile_number.touched" class="text-danger">This field is required</small> -->
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <img  style="width: 150px; height: 150px;" [src]=" (adminData.profile_image)? (environment.baseUrl + '/' + adminData.profile_image) : './assets/img/3002121059.jpg' " alt="Profile pic">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="thumbnail" class=" control-label">Add profile pic</label>
+                            <input (change)="onFileChanged($event)" type="file">
+                        </div>
+                    </div>
+            
+                      <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="address" class="control-label">Address</label>
+                            <textarea  formControlName="address" name="address" class="form-control" rows="5"></textarea>
+                            <!-- <small *ngIf="address.invalid && address.touched" class="text-danger">This field is required</small> -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class=" col-sm-8  col-md-8 ">
+                            <button class="btn btn-primary"
+                            [disabled]="profileForm.touched && !profileForm.valid "
+                            type="submit"
+                            (click)="onEditProfile()">Submit</button>
+                        </div>
+                    </div>
+                </form>
+              </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

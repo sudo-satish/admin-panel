@@ -1,0 +1,172 @@
+
+<div class="profile">
+  <div class="profile-header">
+    <div style="background-image:url(./assets/img/4902540768.jpg);" class="profile-cover">
+      <div class="profile-container">
+        <div class="profile-card">
+          <div class="profile-avetar">
+            <img class="profile-avetar-img" width="128" height="128" [src]=" (userData?.profile_image)? (environment.baseUrl + '/' + userData.profile_image) : './assets/img/3002121059.jpg' " alt="Profile pic">
+          </div>
+          <div class="profile-overview">
+            <h1 class="profile-name">{{ (userData?.name)? userData?.name : '--' }} </h1>        
+            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam quae, quam reprehenderit blanditiis. Necessitatibus et vitae</p> -->
+          </div>          
+        </div> 
+        <div class="profile-tabs">
+          <ul class="profile-nav">
+            <li class="active">
+              <a href="javascript:void(0)">Details</a>
+            </li>            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="profile-body">
+      <div class="col-md-6">
+      <div class="card">
+        
+        <div class="card-body">
+          <div class="card-search">            
+            <div class="card-search-results">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-segment">
+                    <div class="timeline-divider"></div>
+                  </div>
+                  <div class="timeline-content"></div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-segment">
+                    <div class="timeline-media bg-primary circle sq-24">
+                      <div class="icon icon-check"></div>
+                    </div>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="timeline-row">
+                      <div class="media">
+                        <div class="media-body">
+                          <h5 class="m-y-0">Email</h5>
+                          <p>
+                            <small>{{ (userData?.email)? userData?.email : '--' }}</small>
+                          </p>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+                  <div class="timeline-item">
+                  <div class="timeline-segment">
+                    <div class="timeline-media bg-primary circle sq-24">
+                      <div class="icon icon-check"></div>
+                    </div>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="timeline-row">
+                      <div class="media">
+                        <div class="media-body">
+                          <h5 class="m-y-0">Phone</h5>
+                          <p>
+                            <small>{{ (userData?.mobile_number)? userData?.mobile_number : '--' }}</small>
+                          </p>
+                        </div>
+                      </div>                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">        
+        <div class="card-body">
+          <div class="card-search">            
+            <div class="card-search-results">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-segment">
+                    <div class="timeline-divider"></div>
+                  </div>
+                  <div class="timeline-content"></div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-segment">
+                    <div class="timeline-media bg-primary circle sq-24">
+                      <div class="icon icon-check"></div>
+                    </div>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="timeline-row">
+                      <div class="media">
+                        <div class="media-body">
+                          <h5 class="m-y-0">Address</h5>
+                          <p>
+                            <small> {{getAddress()}}</small>
+                          </p>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- <div class="col-md-12">
+      <a routerLink="/admin/edit-profile" class="">       
+      <button class="btn btn-primary btn-sm pull-right" type="button">Edit profile</button> 
+      </a>
+      <a data-toggle="modal" data-target="#viewDetail" >       
+        <button class="btn btn-primary btn-sm pull-right margin-right-5" type="button">Change Password</button> 
+      </a>
+    </div> -->
+  </div>
+</div>
+
+  <!-- CHANGE PASSWORD MODAL -->
+  <div id="viewDetail" tabindex="-1" role="dialog" class="modal fade">
+     <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-primary">
+            <button type="button" class="close" data-dismiss="modal">
+              <span aria-hidden="true">×</span>
+              <span class="sr-only">Close</span>
+            </button>
+            <h4 class="modal-title">Change Password</h4>
+          </div>
+          <div class="modal-body provider-detail">
+            <p class="text-danger">{{ errMessage }}</p>
+            <form #changePass="ngForm" (ngSubmit)="changePassword(changePass.value)" >
+              <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                  <div class="form-group">
+                    <input type="password" placeholder="Enter old Password" name="oldPass" required #oldPass="ngModel" ngModel (keyup)="errMessage = ''" class="form-control">
+                    <small *ngIf="oldPass.invalid && oldPass.touched" class="text-danger">This field is required</small>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" placeholder="Enter new Password" name="newPass" required #newPass="ngModel" ngModel (keyup)=" newpass = newPass.value; errMessage = ''" class="form-control">
+                    <small *ngIf="newPass.invalid && newPass.touched" class="text-danger">This field is required</small>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" placeholder="Re-enter new Password" name="rePass" required #rePass="ngModel" ngModel (keyup)="matchPassword(rePass.value)" class="form-control">
+                    <small *ngIf="rePass.invalid && rePass.touched" class="text-danger">This field is required</small>
+                  </div>
+                  <div class="form-group">
+                    <button [disabled]="rePass.invalid || newPass.invalid || oldPass.invalid || errMessage != '' " class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>      
+    </div>

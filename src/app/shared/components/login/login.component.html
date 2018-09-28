@@ -1,0 +1,94 @@
+<div *ngIf="!forgotPass" class="login">
+  <div class="login-body">
+    <div class="login-brand">
+      <!-- <img class="img-responsive" src="./assets/img/logo-blk.png" alt="logo"> -->
+      <h4> {{ environment.appName }} </h4>
+    </div>
+    <p class="text-danger" >{{ errorMessage }}</p>    
+    <div class="login-form">
+      <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)" >
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" #email="ngModel" class="form-control" type="email"  [(ngModel)]="emailV" name="user_id" required>
+          <small *ngIf="email.invalid && email.touched" class="text-danger">This field is required</small>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" class="form-control" ngModel #password="ngModel" type="password" name="password"  required>
+          <small *ngIf="password.invalid && password.touched" class="text-danger">This field is required</small>
+        </div>
+        <div class="form-group">
+          <!-- <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck1">
+            <label class="custom-control-label" for="customCheck1">Keep me signed in</label>
+          </div> -->
+          <span aria-hidden="true"> · </span>
+          <a (click)="forgotPass = 1; errorMessage = '';" >Forgot password?</a>
+        </div>
+        <button class="btn btn-primary btn-block" 
+        [disabled]="(password.invalid && email.invalid) || buttonLoading"
+        type="submit">Sign in <i class="fa fa-spinner fa-spin" *ngIf="buttonLoading" aria-hidden="true"></i></button>
+      </form>
+    </div>
+  </div>  
+</div>
+
+<!-- Enter Email -->
+<div *ngIf="forgotPass == 1" class="login otpScreen">
+  <div class="login-body">
+    <a class="login-brand" href="#">
+      <img class="img-responsive" src="./assets/img/logo-blk.png" alt="logo">
+    </a>
+    <p class="text-danger" >{{ errorMessage }}</p>
+    <div class="login-form">
+      <form #forgotPass="ngForm" (ngSubmit)="forgotPassword(forgotPass.value)" >
+        <div class="form-group">
+          <label for="email">Enter Email</label>
+          <input #email="ngModel" [(ngModel)]="emailV" class="form-control" type="email" name="email" required>
+          <small *ngIf="email.invalid && email.touched" class="text-danger">This field is required</small>
+        </div>
+        <button [disabled]="email.invalid || buttonLoading" class="btn btn-primary btn-block" type="submit">Send <i class="fa fa-spinner fa-spin" *ngIf="buttonLoading" aria-hidden="true"></i></button>
+      </form>
+    </div>
+  </div>  
+</div>
+
+<!-- Change Pass -->
+<div *ngIf="forgotPass == 2" class="login otpScreen">
+  <div class="login-body">
+    <a class="login-brand" href="#">
+      <img class="img-responsive" src="./assets/img/logo-blk.png" alt="logo">
+    </a>
+    <p class="text-danger" >{{ errorMessage }}</p>    
+    <div class="login-form">
+      <form #resetPassForm="ngForm" (ngSubmit)="resetPass(resetPassForm.value)" >
+        
+        <div class="form-group">
+          <label for="password">Email</label>
+          <input class="form-control" type="email" name="email" #email="ngModel" [(ngModel)]="emailV" required>
+          <small *ngIf="email.invalid && email.touched" class="text-danger">This field is required</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">OTP</label>
+          <input class="form-control" type="otp" name="otp" #otp="ngModel" ngModel required>
+          <small *ngIf="otp.invalid && otp.touched" class="text-danger">This field is required</small>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input class="form-control" #password="ngModel" ngModel type="password" name="password" required>
+          <small *ngIf="password.invalid && password.touched" class="text-danger">This field is required</small>
+        </div>
+        
+        
+        <div class="form-group">
+          <label for="password">Confirm Password</label>
+          <input class="form-control" type="password" name="Cpassword" #Cpassword="ngModel" ngModel required>
+          <small *ngIf="Cpassword.invalid && Cpassword.touched" class="text-danger">This field is required</small>
+        </div>
+        <button class="btn btn-primary btn-block" [disabled]="password.invalid && Cpassword.invalid" type="submit">Sign in</button>
+      </form>
+    </div>
+  </div>
+</div>

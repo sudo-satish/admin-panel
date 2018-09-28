@@ -1,0 +1,106 @@
+
+<div class="layout-header" >
+  <div class="navbar navbar-default">
+    <div class="navbar-header">
+      <a class="navbar-brand navbar-brand-center" routerLink="/" >
+        <!-- <img class="navbar-brand-logo" src="./assets/img/logo.png" alt="DYNE"> -->
+        <h3 class="nav-head-title"> {{environment.appName}}</h3>
+      </a>
+      <button class="navbar-toggler visible-xs-block collapsed" type="button" data-toggle="collapse" data-target="#sidenav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="bars">
+          <span class="bar-line bar-line-1 out"></span>
+          <span class="bar-line bar-line-2 out"></span>
+          <span class="bar-line bar-line-3 out"></span>
+        </span>
+        <span class="bars bars-x">
+          <span class="bar-line bar-line-4"></span>
+          <span class="bar-line bar-line-5"></span>
+        </span>
+      </button>
+      <button class="navbar-toggler visible-xs-block collapsed" type="button" data-toggle="collapse" data-target="#navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="arrow-up"></span>
+        <span class="ellipsis ellipsis-vertical">
+          <!-- <img class="ellipsis-object" width="32" height="32" src="./assets/img/0180441436.jpg" alt="Teddy Wilson"> -->
+        </span>
+      </button>
+    </div>
+    <div class="navbar-toggleable">
+      <nav id="navbar" class="navbar-collapse collapse">
+        <button class="sidenav-toggler hidden-xs" (click)="sidebarCollapsed()" id="sidebarWrap" title="Collapse sidenav" aria-expanded="true" type="button">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="bars">
+            <span class="bar-line bar-line-1 out"></span>
+            <span class="bar-line bar-line-2 out"></span>
+            <span class="bar-line bar-line-3 out"></span>
+            <span class="bar-line bar-line-4 in"></span>
+            <span class="bar-line bar-line-5 in"></span>
+            <span class="bar-line bar-line-6 in"></span>
+          </span>
+        </button>
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li class="dropdown hidden-xs">
+            <button class="navbar-account-btn" data-toggle="dropdown" aria-haspopup="true">
+              <img class="rounded" width="36" height="36" [src]=" (adminData?.profileImage) ? (environment.baseUrl + adminData.profileImage) : './assets/img/3002121059.jpg' " alt="Profile pic"> {{ (adminData.name)? adminData.name : 'User' }}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              
+            
+              <li><a routerLink="/admin/profile" >Profile</a></li>
+              <li (click)="authService.logOut()" ><a>Sign out</a></li>
+            </ul>
+          </li>
+
+          <li class="visible-xs-block">
+            <a href="contacts.html">
+              <span class="icon icon-users icon-lg icon-fw"></span>
+              Contacts
+            </a>
+          </li>
+          <li class="visible-xs-block">
+            <a href="profile.html">
+              <span class="icon icon-user icon-lg icon-fw"></span>
+              Profile
+            </a>
+          </li>
+          <li class="visible-xs-block">
+            <a href="login-1.html">
+              <span class="icon icon-power-off icon-lg icon-fw"></span>
+              Sign out
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="">
+  <div class="layout-sidebar">
+    <div class="layout-sidebar-backdrop"></div>
+    <div class="layout-sidebar-body">
+      <div class="custom-scrollbar">
+        <nav id="sidenav" class="sidenav-collapse collapse">
+          <ul class="sidenav">
+            
+            <!-- <li class="sidenav-heading">Navigation</li> -->
+            <li routerLink="/dashboard" routerLinkActive="active" class="sidenav-item dashboardPageNav p-cursor">
+              <a aria-haspopup="true">
+                <span class="sidenav-icon fa fa-home"></span>
+                <span class="sidenav-label">Dashboard</span>
+              </a>
+            </li>
+            <li routerLink="/admin/waitlist" routerLinkActive="active" class="sidenav-item dashboardPageNav p-cursor">
+              <a aria-haspopup="true">
+                <span class="sidenav-icon fa fa-home"></span>
+                <span class="sidenav-label">Waitlist</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
