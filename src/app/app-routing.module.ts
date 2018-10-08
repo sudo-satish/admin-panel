@@ -29,6 +29,11 @@ const routes: Routes = [
         path: 'admin',
         loadChildren: './views/admin/admin.module#AdminModule'
       },
+      
+      {
+        path: 'meta',
+        loadChildren: './views/meta/meta.module#MetaModule'
+      },
       // {
       //   path: 'users',
       //   loadChildren: './views/users/users.module#UsersModule'

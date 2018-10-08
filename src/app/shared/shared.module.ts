@@ -12,6 +12,7 @@ import { AuthService } from './services/auth.service';
 import { CommonService } from './services/common.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { FormsModule } from '@angular/forms';
+import { ReversePipe } from './pipes/reverse.pipe';
 
 @NgModule({
   imports: [
@@ -27,13 +28,16 @@ import { FormsModule } from '@angular/forms';
   exports: [
     HeaderComponent, 
     FooterComponent,
-    NotificationComponent
+    NotificationComponent,
+    ReversePipe
   ],
-  declarations: [HeaderComponent, 
+  declarations: [
+    HeaderComponent, 
     FooterComponent, 
     NotificationComponent,
     NotFoundComponent,
     LoginComponent,
+    ReversePipe
   ]
 })
 export class SharedModule { }

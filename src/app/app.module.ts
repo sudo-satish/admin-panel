@@ -11,14 +11,11 @@ import { MatModuleModule } from './mat-module.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ContainerComponent } from './layout/container/container.component';
 import { AuthInterceptor } from './shared/services/auth.interceptor';
-import { AccountManagementModule } from './views/account-management/account-management.module';
-import { DialogOverviewExampleDialog } from './views/account-management/product-list/product-list.component';
-// import { DialogOverviewExampleDialog } from './views/account-management/product-list/product-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContainerComponent
+    ContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,12 +25,11 @@ import { DialogOverviewExampleDialog } from './views/account-management/product-
     MatModuleModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AccountManagementModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [DialogOverviewExampleDialog]
+  entryComponents: []
 })
 export class AppModule { }

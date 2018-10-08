@@ -1,0 +1,121 @@
+
+<section class="action-buttons">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav>
+                    <button class="btn btn-success new" (click)="onNew('', form)" data-toggle="modal" data-target="#formModal">New</button>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="grid">
+    <div class="container">
+        <div class="row">
+
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            
+            <!-- Name Column -->
+            <ng-container matColumnDef="activityName">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('activityName') }} </th>
+                <td mat-cell *matCellDef="let element"> {{element.activity.activityName}} </td>
+            </ng-container>
+            
+            <!-- Name Column -->
+            <ng-container matColumnDef="subActivityName">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('subActivityName') }} </th>
+                <td mat-cell *matCellDef="let element"> 
+                    {{ element.subActivityName }}
+                </td>
+            </ng-container>
+           
+            <!-- Name Column -->
+            <ng-container matColumnDef="spot">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('spot') }} </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <div [innerHtml]="getSpotHtml(element)"></div>
+                </td>
+            </ng-container>
+
+            <!-- Image Column -->
+            <ng-container matColumnDef="activityImage">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('activityImage') }} </th>
+                <td mat-cell *matCellDef="let element">
+                     <img [src]="baseUrl+element.activity.activityImage" height="45px" width="45px">
+                </td>
+            </ng-container>
+            
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <!-- <button class="btn btn-success" (click)="viewDetail(element)"  data-toggle="modal" data-target="#detailModal">View</button> -->
+                    <button class="btn btn-success" (click)="onEdit(element, form)"  data-toggle="modal" data-target="#formModal">Edit</button>
+                    <button class="btn btn-danger" (click)="onDelete(element)">Delete</button>
+                </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div id="formModal" tabindex="-1" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger">{{ errMessage }}</p>
+                    <form #form="ngForm">
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <input type="hidden" name="_id" ngModel>
+                                <div class="form-group">
+                                    <label for="subActivityName"> {{ startCase('subActivityName')}} </label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="{{ startCase('subActivityName')}}" name="subActivityName" required #subActivityName="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="subActivityName.invalid && subActivityName.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <!-- <div class="form-group">
+                                    <label for="spot"> Spot </label>
+                                    <input type="text" class="form-control" #spot>
+                                    <button class="btn btn-success" (click)="addSpot(spot)">Add</button>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item" *ngFor="let spot of selectedElement?.spot;let index = index; ">{{ startCase(taskType.spot) }} <span (click)="deleteSpot('', index)" class="badge badge-secondary" style="cursor: pointer; "> remove</span></li>
+                                </ul>
+                                -->
+
+                                <mat-form-field>
+                                    <mat-select placeholder="Spots" ngModel name="spot" [compareWith]="compareWith" multiple>
+                                        <mat-option *ngFor="let spot of spots" [value]="spot">{{spot.spotName}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <div class="form-group">
+                                    <button class="btn btn-primary" (click)="formSubmitted(form)">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</section>

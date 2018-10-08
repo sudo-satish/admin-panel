@@ -1,0 +1,37 @@
+<div class="title-bar">
+    <!-- <h1 class="title-bar-title">
+        <span class="d-ib">{{title}}</span>
+    </h1> -->
+
+    <button class="btn btn-small btn-info" (click)="save()">
+        <i class="fa fa-save"></i>
+        {{ htmlContent == '' ? 'Save' : 'Update' }}
+    </button>
+
+    
+    <button class="btn btn-primary" style="margin-left: 1em;" (click)="preview()" style="margin-left: 5px;" data-target="#preview" data-toggle="modal">
+    <i class="fa fa-eye"></i>
+    Preview
+    </button>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="false" [height]="height" [(ngModel)]="htmlContent">
+                </app-ngx-editor>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="preview" tabindex="-1" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" [innerHtml]="htmlContent">
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>

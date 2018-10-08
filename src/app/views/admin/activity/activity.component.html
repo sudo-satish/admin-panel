@@ -1,0 +1,198 @@
+
+<section class="action-buttons">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav>
+                    <button class="btn btn-success new" (click)="onNew('', form)" data-toggle="modal" data-target="#formModal">New</button>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="grid">
+    <div class="container">
+        <div class="row">
+
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            
+            <!-- Name Column -->
+            <ng-container matColumnDef="activityName">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('activityName') }} </th>
+                <td mat-cell *matCellDef="let element"> {{element.activityName}} </td>
+            </ng-container>
+            
+            <!-- Name Column -->
+            <ng-container matColumnDef="subActivity">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('subActivity') }} </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button class="btn btn-default" (click)="viewSubactivity(element)">SubActivity</button>
+                </td>
+            </ng-container>
+
+            <!-- Image Column -->
+            <ng-container matColumnDef="activityImage">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('activityImage') }} </th>
+                <td mat-cell *matCellDef="let element">
+                     <img [src]="baseUrl+element.activityImage" height="45px" width="45px">
+                </td>
+            </ng-container>
+            
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button class="btn btn-success" (click)="viewDetail(element)"  data-toggle="modal" data-target="#detailModal">View</button>
+                    <button class="btn btn-success" (click)="onEdit(element, form)"  data-toggle="modal" data-target="#formModal">Edit</button>
+                    <button class="btn btn-danger" (click)="onDelete(element)">Delete</button>
+                </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div id="formModal" tabindex="-1" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger">{{ errMessage }}</p>
+                    <form #form="ngForm">
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <input type="hidden" name="_id" ngModel>
+                                <div class="form-group">
+                                    <label for="activityName"> {{ startCase('activityName')}} </label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="{{ startCase('activityName')}}" name="activityName" required #activityName="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="activityName.invalid && activityName.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="activityQuestion"> {{ startCase('activityQuestion') }} </label>
+                                    <textarea 
+                                        name="activityQuestion" required #activityQuestion="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    </textarea>
+                                    <small *ngIf="activityQuestion.invalid && activityQuestion.touched" class="text-danger">This field is required</small>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label for="spotQuestion"> {{ startCase('spotQuestion') }} </label>
+                                    <textarea 
+                                        name="spotQuestion" required #spotQuestion="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    </textarea>
+                                    <small *ngIf="spotQuestion.invalid && spotQuestion.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="taskTypeQuestion"> {{ startCase('taskTypeQuestion') }} </label>
+                                    <textarea 
+                                        name="taskTypeQuestion" required #taskTypeQuestion="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    </textarea>
+                                    <small *ngIf="taskTypeQuestion.invalid && taskTypeQuestion.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="name"> Image </label>
+                                    <input 
+                                        type="file"  
+                                        class="form-control"
+                                        required
+                                        name="spotImage"
+                                        (change)="fileEv($event)"
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tasktype"> TaskType </label>
+                                    <input type="text" class="form-control" #taskType>
+                                    <button class="btn btn-success" (click)="addTaskType(taskType)">Add</button>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item" *ngFor="let taskType of selectedElement?.tasktype;let index = index; ">{{ startCase(taskType.tasktype) }} <span (click)="deleteTaskType(taskType.tasktype, index)" class="badge badge-secondary" style="cursor: pointer; "> remove</span></li>
+                                </ul>
+
+                                <div class="form-group">
+                                    <button class="btn btn-primary" (click)="formSubmitted(form)">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- View Detail Modal   -->
+<section>
+    <!-- CHANGE PASSWORD MODAL -->
+    <div id="detailModal" tabindex="-1" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">{{ selectedElement?.activityName }}</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="card">
+                        <img class="card-img-top" height="180px" width="100%" [src]="baseUrl+selectedElement?.activityImage" alt="Card image cap">
+                        <div class="card-body">
+                            <!-- <h5 class="card-title">{{ selectedElement?.activityName }}</h5> -->
+                            <p class="card-text">
+                               <span class="key">{{ startCase('activityQuestion') }}</span>  :  <span class="value"> {{ selectedElement?.activityQuestion }} </span> 
+                            </p>
+                            
+                            <p class="card-text">
+                               <span class="key"> {{ startCase('spotQuestion') }} </span>  :  <span class="value"> {{ selectedElement?.spotQuestion }} </span> 
+                            </p>
+                            
+                            <p class="card-text">
+                               <span class="key">{{ startCase('taskTypeQuestion') }}</span>  :  <span class="value"> {{ selectedElement?.taskTypeQuestion }} </span> 
+                            </p>
+                            
+                            <p class="card-text">
+                               <span class="key">{{ startCase('tasktype') }}</span> 
+                            </p>
+
+                             <ul class="list-group list-group-flush">
+                                <li class="list-group-item" *ngFor="let taskType of selectedElement?.tasktype">{{ startCase(taskType.tasktype) }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</section>

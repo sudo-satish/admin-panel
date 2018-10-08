@@ -468,3 +468,20 @@ input.ng-invalid.ng-touched {
     background-color: white;
     padding: 0px 14px;
 }
+
+span.key {
+    color: red;
+}
+
+span.value {
+    color: green;
+}
+
+.cdk-overlay-container {
+    z-index: 1060;
+}
+
+
+div.layout-content {
+    overflow-x: auto !important;
+}
