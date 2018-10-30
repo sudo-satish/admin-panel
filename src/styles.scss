@@ -485,3 +485,15 @@ span.value {
 div.layout-content {
     overflow-x: auto !important;
 }
+
+section.action-buttons {
+    margin-bottom: 15px;
+}
+
+td {
+    padding: 5px 15px !important;
+}
+
+td:first-child {
+    padding-left: 24px !important;
+}

@@ -4,7 +4,8 @@
         <div class="row">
             <div class="col-md-12">
                 <nav>
-                    <button class="btn btn-success new" (click)="onNew('', form)" data-toggle="modal" data-target="#formModal">New</button>
+                    <button class="btn btn-default new" (click)="downloadExcel('Users')">Download Excel</button>
+                    <!-- <button class="btn btn-success new" (click)="onNew('', form)" data-toggle="modal" data-target="#formModal">New</button> -->
                 </nav>
             </div>
         </div>
@@ -19,7 +20,7 @@
             
             <!-- Name Column -->
             <ng-container matColumnDef="avatar">
-                <th mat-header-cell *matHeaderCellDef> Avatar </th>
+                <th mat-header-cell *matHeaderCellDef> Profile Picture </th>
                 <td mat-cell *matCellDef="let element"> <img [src]="baseUrl+element.avatar" height="45px" width="45px"></td>
             </ng-container>
             
@@ -57,7 +58,9 @@
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef> Action </th>
                 <td mat-cell *matCellDef="let element"> 
-                    <!-- <button class="btn btn-success" (click)="onEdit(element, form)"  data-toggle="modal" data-target="#formModal">Edit</button> -->
+                    <button class="btn btn-success" (click)="onEdit(element, form)"  data-toggle="modal" data-target="#formModal">Edit</button>
+                    <button class="btn btn-primary" (click)="viewActivityDetail(element)"  data-toggle="modal" data-target="#activityDetailModal">Activity</button>
+                    <button class="btn btn-default" (click)="viewClubDetail(element)"  data-toggle="modal" data-target="#clubDetailModal">Club Membership</button>
                     <button class="btn btn-danger" (click)="onDelete(element)">Delete</button>
                 </td>
             </ng-container>
@@ -72,7 +75,6 @@
 </section>
 
 <section>
-    <!-- CHANGE PASSWORD MODAL -->
     <div id="formModal" tabindex="-1" role="dialog" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -90,56 +92,189 @@
                             <div class="col-md-10 col-md-offset-1">
                                 <input type="hidden" name="_id" ngModel>
                                 <div class="form-group">
-                                    <label for="name"> Name </label>
+                                    <label for="firstName"> {{ startCase('firstName') }} </label>
                                     <input 
                                         type="text" 
-                                        placeholder="Name" name="spotName" required #spotName="ngModel" 
+                                        name="firstName" required #firstName="ngModel" 
                                         ngModel
                                         class="form-control"
                                     >
-                                    <small *ngIf="spotName.invalid && spotName.touched" class="text-danger">This field is required</small>
+                                    <small *ngIf="firstName.invalid && firstName.touched" class="text-danger">This field is required</small>
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="description"> Description </label>
-                                    <textarea 
-                                        name="description" required #description="ngModel" 
+                                    <label for="lastName"> {{ startCase('lastName') }} </label>
+                                    <input 
+                                        type="text" 
+                                        name="lastName" required #lastName="ngModel" 
                                         ngModel
                                         class="form-control"
                                     >
-                                    </textarea>
-                                    <small *ngIf="description.invalid && description.touched" class="text-danger">This field is required</small>
+                                    <small *ngIf="lastName.invalid && lastName.touched" class="text-danger">This field is required</small>
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="name"> Image </label>
+                                    <label for="phoneNumber"> {{ startCase('phoneNumber') }} </label>
+                                    <input 
+                                        type="text" 
+                                        name="phoneNumber" required #phoneNumber="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="phoneNumber.invalid && phoneNumber.touched" class="text-danger">This field is required</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="countryCode"> {{ startCase('countryCode') }} </label>
+                                    <input 
+                                        type="text" 
+                                        name="countryCode" required #countryCode="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="countryCode.invalid && countryCode.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email"> {{ startCase('email') }} </label>
+                                    <input 
+                                        type="email" 
+                                        name="email" required #email="ngModel" 
+                                        ngModel
+                                        email
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="email.errors && email.errors.required && email.touched" class="text-danger">This field is required</small>
+                                    <small *ngIf="email.errors && email.errors.email && email.touched" class="text-danger">Enter valid email</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="gender"> {{ startCase('gender') }} </label>
+                                    <select 
+                                        class="form-control" 
+                                        id="gender"
+                                        ngModel
+                                        name="gender" required #gender="ngModel"
+                                    >
+                                        <option value="m">Male</option>
+                                        <option value="f">Female</option>
+                                        <option value="o">Other</option>
+                                    </select>
+
+                                    <small *ngIf="gender.invalid && gender.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="avatar"> Profile Image </label>
                                     <input 
                                         type="file"  
                                         class="form-control"
                                         required
-                                        name="spotImage"
+                                        name="avatar"
                                         (change)="fileEv($event)"
+                                        required-file="true"
                                     >
-                                    <small *ngIf="spotName.invalid && spotName.touched" class="text-danger">This field is required</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="lattitude">Lattitude</label>
-                                    <input type="text" placeholder="Lattitude" name="lattitude" required #lattitude="ngModel" ngModel class="form-control">
-                                    <small *ngIf="lattitude.invalid && lattitude.touched" class="text-danger">This field is required</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="longitude">Longitude</label>
-                                    <input type="text" placeholder="Longitude" name="longitude" required #longitude="ngModel" ngModel class="form-control">
-                                    <small *ngIf="longitude.invalid && longitude.touched" class="text-danger">This field is required</small>
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary" (click)="formSubmitted(form)">Submit</button>
+                                    <button class="btn btn-primary" [disabled]="!form.valid" (click)="formSubmitted(form)">Submit</button>
                                 </div>
                             </div>
                         </div>
                     </form>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div id="activityDetailModal" tabindex="-1" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Activity</h4>
+                </div>
+                <div class="modal-body provider-detail">
+                    <p class="text-danger">{{ errMessage }}</p>
+                    <div class="card" style="width: 100%;" *ngFor="let activity of activityArr">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ activity.activityId.activityName }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ activity.type }}</h6>
+
+                            <div class="card-text">
+                                <div class="activity-question" >
+                                    {{ activity.activityId.activityQuestion }}
+                                    {{ activity.distance }}
+                                </div>
+                                
+                                <div class="spot-question">
+                                     {{ activity.activityId.spotQuestion }}
+                                    <div class="row">
+                                        <div class="col-md-4" *ngFor="let spot of activity.spot;">
+                                            <div class="card" style="width: 100%;" >
+                                                <img class="card-img-top" height="45px" width="100%" [src]="baseUrl+spot.spotId.spotImage" alt="">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ spot.spotId.spotName }}</h5>
+                                                    <p class="card-text">
+                                                          
+                                                         {{ spot.spotId.description }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="spot-question">
+                                     {{ activity.activityId.taskTypeQuestion }}
+                                    <div class="row">
+                                        <div class="col-md-4" *ngFor="let tasktype of activity.tasktype;">
+                                            <div class="card" style="width: 100%;" >
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ getTaskTitle(activity, tasktype) }}</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div id="clubDetailModal" tabindex="-1" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Club Membership</h4>
+                   
+                </div>
+                <div class="modal-body provider-detail">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="list-group">
+                                <li class="list-group-item" *ngFor="let club of clubArr"> 
+                                    {{ club.club.clubName }} ({{ club.club.email }})
+                                    <span class="badge badge-primary badge-pill">{{ club.status }}</span>
+                                    
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer"></div>
             </div>

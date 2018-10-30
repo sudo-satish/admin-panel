@@ -3,6 +3,9 @@ import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import * as _ from "lodash";
+import * as XLSX from 'xlsx';
+
+declare var $:any;
 
 export abstract class UpComponent {
     
@@ -22,6 +25,7 @@ export abstract class UpComponent {
 
     ngOnInit() {
         this.fetchData();
+        // this.file = null; // <= issue when we upload an image and navigate to o
     }
 
     fileEv($event) {
@@ -43,8 +47,18 @@ export abstract class UpComponent {
     }
 
     defaultErrorHandler(error) {
-        if (error['error']['error']) {
-            alert(error['error']['error']);
+        if (error['error']) {
+            if (error['error']['error']) {
+                let errMsg = error['error']['error'];
+                if (errMsg.indexOf('Can\'t extract geo keys') > -1) {
+                    alert('Please enter a valid geo location.');
+                } else {
+                    alert(errMsg);
+                }
+            }
+        } else {
+            alert('Some error occured!');
+            console.error(error);
         }
     }
 
@@ -78,7 +92,12 @@ export abstract class UpComponent {
 
     onDelete(element) {
         let url = this.getDeleteUrl(element);
+        let confirmed = confirm('Confirm to delete!');
 
+        if (!confirmed) {
+            return false;
+        }
+        
         this.http.delete(url).subscribe(
             response => {
                 this.afterDelete(element);
@@ -106,6 +125,10 @@ export abstract class UpComponent {
 
         url += `/${_id}`;
 
+        if (!this.validateBeforeUpdate(form)) {
+            return false;
+        }
+
         this.http.put(url, value).subscribe(
             response => {
                 this.afterUpdate(form, value, response);
@@ -117,12 +140,64 @@ export abstract class UpComponent {
     saveValue(form) {
         let url = this.getSaveUlr();
         let value = this.getSaveValue(form);
+        
+        if(!this.validateBeforeSave(form)) {
+            return;
+        }
+
         this.http.post(url, value).subscribe(
             response => {
                 this.afterSave(form, response);
             },
             this.defaultErrorHandler.bind(this)
         )
+    }
+
+    validateBeforeSave(form) {
+        let value = form.value;
+
+        if($(':input[required-file="true"]').length > 0){
+            if (!this.file || this.file == null) {
+                alert('Please upload an image!');
+                return false;
+            }
+        }
+
+        if (typeof value.lattitude !== 'undefined') {
+            if (!parseFloat(value.lattitude)) {
+                alert('Please enter valid lattitude.');
+                return false;
+            }
+        }
+
+        if (typeof value.lattitude !== 'undefined') {
+            if (!parseFloat(value.longitude)) {
+                alert('Please enter valid longitude.');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    validateBeforeUpdate(form) {
+        let value = form.value;
+        
+        if (typeof value.lattitude !== 'undefined') {
+            if (!parseFloat(value.lattitude)) {
+                alert('Please enter valid lattitude.');
+                return false;
+            }
+        }
+
+        if (typeof value.lattitude !== 'undefined') {
+            if (!parseFloat(value.longitude)) {
+                alert('Please enter valid longitude.');
+                return false;
+            }
+        }
+
+        return true;
     }
 
     getUpdateValue(form: NgForm) {
@@ -140,10 +215,16 @@ export abstract class UpComponent {
         this.dataSource = new MatTableDataSource(data);
         this.setPaginator(this.dataSource);
         alert('Saved successfully');
+        if ($('#formModal')) {
+            $('#formModal').modal('toggle');
+        }
     }
 
     afterUpdate(form: NgForm, value, response) {
         alert('Updated successfully');
+        if ($('#formModal')) {
+            $('#formModal').modal('toggle');
+        }
         this.fetchData();
     }
 
@@ -170,7 +251,7 @@ export abstract class UpComponent {
         return `/admin/api/` + this.resource + '/' + element._id;
     }
 
-    getFormData(form: NgForm): FormData {
+    getFormData(form: NgForm, fileField?): FormData {
         let formData = new FormData();
         let formValue = form.value;
 
@@ -184,7 +265,8 @@ export abstract class UpComponent {
         }
 
         if (this.file) {
-            formData.append('spot', this.file);
+
+            formData.append(fileField ? fileField : 'spot', this.file);
         }
 
         return formData;
@@ -193,5 +275,24 @@ export abstract class UpComponent {
     startCase(s) {
         return _.startCase(s);
     }
+
+    downloadExcel(sheetName = 'Sheet') {
+
+        let data = this.dataSource.data;
+
+        /* generate worksheet */
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+
+        /* generate workbook and add the worksheet */
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+
+        /* save to file */
+        let timestame = new Date().getTime();
+        let filename = `${sheetName}_${timestame}.xlsx`;
+        XLSX.writeFile(wb, filename);
+
+    }
+
     
 }

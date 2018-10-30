@@ -1,13 +1,13 @@
-import { OnInit, Component } from "@angular/core";
+import { OnInit, Component, ViewChild } from "@angular/core";
 import { UpComponent } from "../../../shared/components/up-component.component";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
 import { NgForm, FormControl } from "@angular/forms";
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource, MatPaginator } from "@angular/material";
 import { pull, remove } from "lodash";
 import { Router } from "@angular/router";
 import * as _ from "lodash";
- 
+
 @Component({
     selector: 'app-activity',
     templateUrl: './activity.component.html',
@@ -22,11 +22,18 @@ export class ActivityComponent extends UpComponent {
     selectedElementBKP = { tasktype: [], activityName: '', activityImage: '', activityQuestion: '', spotQuestion: '', taskTypeQuestion: ''}; // To view detail.
     selectedElementHtml = '<h3>Nothing found!</h3>';
 
+    
     constructor(
         public http: HttpClient,
         public router: Router
     ) {
         super(http);
+    }
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    setPaginator(dataSource: MatTableDataSource<any>): MatTableDataSource<any> {
+        dataSource.paginator = this.paginator;
+        return dataSource;
     }
 
     getUpdateValue(form: NgForm) {
@@ -84,8 +91,10 @@ export class ActivityComponent extends UpComponent {
     }
 
     addTaskType(taskType) {
-        this.selectedElement.tasktype.unshift({ tasktype: taskType.value });
-        taskType['value'] = '';
+        if(taskType['value'] !== '') {
+            this.selectedElement.tasktype.unshift({ tasktype: taskType.value });
+            taskType['value'] = '';
+        }
     }
 
     deleteTaskType(tasktype, index) {

@@ -1,9 +1,9 @@
-import { OnInit, Component } from "@angular/core";
+import { OnInit, Component, ViewChild } from "@angular/core";
 import { UpComponent } from "../../../shared/components/up-component.component";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
 import { NgForm, FormControl } from "@angular/forms";
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource, MatPaginator } from "@angular/material";
 import { pull, remove } from "lodash";
 import { Router, ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
@@ -36,6 +36,12 @@ export class SubactivityComponent extends UpComponent {
         super(http);
     }
 
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    setPaginator(dataSource: MatTableDataSource<any>): MatTableDataSource<any> {
+        dataSource.paginator = this.paginator;
+        return dataSource;
+    }
+    
     ngOnInit() {
         
         this.route.params.subscribe(

@@ -13,6 +13,8 @@ import { ReversePipe } from '../../shared/pipes/reverse.pipe';
 import { SharedModule } from '../../shared/shared.module';
 import { SubactivityComponent } from './subactivity/subactivity.component';
 import { UsersComponent } from './users/users.component';
+import { ClubComponent } from './club/club.component';
+import { ActivityDetailComponent } from './activity-detail/activity-detail.component';
 
 @NgModule({
   imports: [
@@ -29,10 +31,12 @@ import { UsersComponent } from './users/users.component';
     ProfileComponent, 
     EditProfileComponent,
     SpotComponent,
+    ClubComponent,
     EventComponent,
     ActivityComponent,
     SubactivityComponent,
     UsersComponent,
+    ActivityDetailComponent,
   ]
 })
 export class AdminModule { }

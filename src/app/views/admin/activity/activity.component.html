@@ -5,6 +5,7 @@
             <div class="col-md-12">
                 <nav>
                     <button class="btn btn-success new" (click)="onNew('', form)" data-toggle="modal" data-target="#formModal">New</button>
+                    <button class="btn btn-default new" (click)="downloadExcel('Activity')" >Download Excel</button>
                 </nav>
             </div>
         </div>
@@ -52,6 +53,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
     </div>
 </section>
@@ -124,6 +126,7 @@
                                         required
                                         name="spotImage"
                                         (change)="fileEv($event)"
+                                         required-file="true"
                                     >
                                 </div>
 
@@ -137,7 +140,7 @@
                                 </ul>
 
                                 <div class="form-group">
-                                    <button class="btn btn-primary" (click)="formSubmitted(form)">Submit</button>
+                                    <button class="btn btn-primary" [disabled]="!form.valid" (click)="formSubmitted(form)">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -164,10 +167,9 @@
                 </div>
                 <div class="modal-body">
                     
-                    <div class="card">
+                    <!-- <div class="card">
                         <img class="card-img-top" height="180px" width="100%" [src]="baseUrl+selectedElement?.activityImage" alt="Card image cap">
                         <div class="card-body">
-                            <!-- <h5 class="card-title">{{ selectedElement?.activityName }}</h5> -->
                             <p class="card-text">
                                <span class="key">{{ startCase('activityQuestion') }}</span>  :  <span class="value"> {{ selectedElement?.activityQuestion }} </span> 
                             </p>
@@ -188,7 +190,9 @@
                                 <li class="list-group-item" *ngFor="let taskType of selectedElement?.tasktype">{{ startCase(taskType.tasktype) }}</li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
+
+                    <app-activity-detail [activity]="selectedElement"></app-activity-detail>
 
                 </div>
                 <div class="modal-footer"></div>

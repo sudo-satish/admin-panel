@@ -5,6 +5,7 @@
             <div class="col-md-12">
                 <nav>
                     <button class="btn btn-success new" (click)="onNew('', form)" data-toggle="modal" data-target="#formModal">New</button>
+                    <button class="btn btn-default new" (click)="downloadExcel('Event')">Download Excel</button>
                 </nav>
             </div>
         </div>
@@ -55,6 +56,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
     </div>
 </section>
@@ -107,6 +109,7 @@
                                         required
                                         name="spotImage"
                                         (change)="fileEv($event)"
+                                         required-file="true"
                                     >
                                 </div>
 
@@ -128,7 +131,7 @@
                                     <small *ngIf="longitude.invalid && longitude.touched" class="text-danger">This field is required</small>
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary" (click)="formSubmitted(form)">Submit</button>
+                                    <button class="btn btn-primary" [disabled]="!form.valid" (click)="formSubmitted(form)">Submit</button>
                                 </div>
                             </div>
                         </div>

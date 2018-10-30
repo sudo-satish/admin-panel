@@ -1,0 +1,27 @@
+<div class="card">
+    <img class="card-img-top" height="180px" width="100%" [src]="baseUrl+selectedElement?.activityImage" alt="Card image cap">
+    <div class="card-body">
+        <p class="card-text">
+            <span class="key">{{ startCase('activityQuestion') }}</span> :
+            <span class="value"> {{ selectedElement?.activityQuestion }} </span>
+        </p>
+
+        <p class="card-text">
+            <span class="key"> {{ startCase('spotQuestion') }} </span> :
+            <span class="value"> {{ selectedElement?.spotQuestion }} </span>
+        </p>
+
+        <p class="card-text">
+            <span class="key">{{ startCase('taskTypeQuestion') }}</span> :
+            <span class="value"> {{ selectedElement?.taskTypeQuestion }} </span>
+        </p>
+
+        <p class="card-text">
+            <span class="key">{{ startCase('tasktype') }}</span>
+        </p>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let taskType of selectedElement?.tasktype">{{ startCase(taskType.tasktype) }}</li>
+        </ul>
+    </div>
+</div>

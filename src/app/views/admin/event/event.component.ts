@@ -1,9 +1,9 @@
-import { OnInit, Component } from "@angular/core";
+import { OnInit, Component, ViewChild } from "@angular/core";
 import { UpComponent } from "../../../shared/components/up-component.component";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
 import { NgForm } from "@angular/forms";
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource, MatPaginator } from "@angular/material";
 
 @Component({
     selector: 'app-event',
@@ -21,6 +21,13 @@ export class EventComponent extends UpComponent {
         super(http);
     }
 
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    setPaginator(dataSource: MatTableDataSource<any>): MatTableDataSource<any> {
+        dataSource.paginator = this.paginator;
+        return dataSource;
+    }
+    
     getUpdateValue(form: NgForm) {
         return this.getFormData(form);
     }
@@ -47,5 +54,41 @@ export class EventComponent extends UpComponent {
         }
 
         return formData;
+    }
+
+    validateBeforeSave(form) {
+        let value = form.value;
+        if (!this.file || this.file == null) {
+            alert('Please upload an image!');
+            return false;
+        }
+
+        if (!parseFloat(value.lattitude)) {
+            alert('Please enter valid lattitude.');
+            return false;
+        }
+        
+        if (!parseFloat(value.longitude)) {
+            alert('Please enter valid longitude.');
+            return false;
+        }
+
+        return true;
+    }
+    
+    validateBeforeUpdate(form) {
+        let value = form.value;
+
+        if (!parseFloat(value.lattitude)) {
+            alert('Please enter valid lattitude.');
+            return false;
+        }
+        
+        if (!parseFloat(value.longitude)) {
+            alert('Please enter valid longitude.');
+            return false;
+        }
+
+        return true;
     }
 }

@@ -7,6 +7,7 @@ import { EventComponent } from './event/event.component';
 import { ActivityComponent } from './activity/activity.component';
 import { SubactivityComponent } from './subactivity/subactivity.component';
 import { UsersComponent } from './users/users.component';
+import { ClubComponent } from './club/club.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'spot',
     component: SpotComponent
+  },
+  {
+    path: 'club',
+    component: ClubComponent
   },
   {
     path: 'event',

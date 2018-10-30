@@ -1,0 +1,272 @@
+
+<section class="action-buttons">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav>
+                    <button class="btn btn-default new" (click)="downloadExcel('Club')">Download Excel</button>
+                    <!-- <button class="btn btn-success new" (click)="onNew('', form)" data-toggle="modal" data-target="#formModal">New</button> -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="grid">
+    <div class="container">
+        <div class="row">
+
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            
+            <!-- Name Column -->
+            <ng-container matColumnDef="admin">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('admin') }} </th>
+                <td mat-cell *matCellDef="let element"> {{element.user?.firstName ? element.user?.firstName : element.user?.countryCode+ '-' +element.user?.phoneNumber}} </td>
+            </ng-container>
+            
+            <!-- Name Column -->
+            <ng-container matColumnDef="clubName">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('clubName') }} </th>
+                <td mat-cell *matCellDef="let element"> 
+                    {{ element.clubName }}
+                </td>
+            </ng-container>
+           
+            <!-- Name Column -->
+            <ng-container matColumnDef="maxSize">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('maxSize') }} </th>
+                <td mat-cell *matCellDef="let element"> 
+                    {{ element.maxSize}}
+                </td>
+            </ng-container>
+
+            <!-- Image Column -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('description') }} </th>
+                <td mat-cell *matCellDef="let element">
+                     {{ element.description }}
+                </td>
+            </ng-container>
+            
+            <!-- Image Column -->
+            <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef> {{ startCase('location') }} </th>
+                <td mat-cell *matCellDef="let element">
+                     {{ element.lattitude }} | 
+                     {{ element.longitude }}
+                </td>
+            </ng-container>
+            
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button class="btn btn-success" (click)="viewDetail(element)"  data-toggle="modal" data-target="#detailModal">Detail</button>
+                    <button class="btn btn-success" (click)="onEdit(element, form)"  data-toggle="modal" data-target="#formModal">Edit</button>
+                    <button class="btn btn-danger" (click)="onDelete(element)">Delete</button>
+                </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div id="formModal" tabindex="-1" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-danger">{{ errMessage }}</p>
+                    <form #form="ngForm">
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <input type="hidden" name="_id" ngModel>
+                                <div class="form-group">
+                                    <label for="clubName"> {{ startCase('clubName')}} </label>
+                                    <input 
+                                        type="text" 
+                                        placeholder="{{ startCase('clubName')}}" name="clubName" required #clubName="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="clubName.invalid && clubName.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email"> {{ startCase('email')}} </label>
+                                    <input 
+                                        type="email" 
+                                        placeholder="{{ startCase('email')}}" name="email" required #email="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="email.invalid && email.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="maxSize"> {{ startCase('maxSize')}} </label>
+                                    <input 
+                                        type="maxSize" 
+                                        placeholder="{{ startCase('maxSize')}}" name="maxSize" required #maxSize="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="maxSize.invalid && maxSize.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="lattitude"> {{ startCase('lattitude')}} </label>
+                                    <input 
+                                        type="lattitude" 
+                                        placeholder="{{ startCase('lattitude')}}" name="lattitude" required #lattitude="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="lattitude.invalid && lattitude.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="longitude"> {{ startCase('longitude')}} </label>
+                                    <input 
+                                        type="longitude" 
+                                        placeholder="{{ startCase('longitude')}}" name="longitude" required #longitude="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="longitude.invalid && longitude.touched" class="text-danger">This field is required</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="description"> {{ startCase('description')}} </label>
+                                    <input 
+                                        type="description" 
+                                        placeholder="{{ startCase('description')}}" name="description" required #description="ngModel" 
+                                        ngModel
+                                        class="form-control"
+                                    >
+                                    <small *ngIf="description.invalid && description.touched" class="text-danger">This field is required</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name"> Image </label>
+                                    <input type="file" class="form-control" (change)="fileEv($event)">
+                                </div>
+
+                                <mat-form-field>
+                                    <mat-select placeholder="Primary Activity" ngModel name="primaryActivity" [compareWith]="compareWithActivity" multiple>
+                                        <mat-option *ngFor="let primaryActivity of activitys" [value]="primaryActivity">{{primaryActivity.activityName}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                
+                                <mat-form-field>
+                                    <mat-select placeholder="Secondary Activity" ngModel name="secondaryActivity" [compareWith]="compareWithActivity" multiple>
+                                        <mat-option *ngFor="let secondaryActivity of activitys" [value]="secondaryActivity">{{secondaryActivity.activityName}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                
+                                <mat-form-field>
+                                    <mat-select placeholder="Other Activity" ngModel name="otherActivity" [compareWith]="compareWithActivity" multiple>
+                                        <mat-option *ngFor="let otherActivity of activitys" [value]="otherActivity">{{otherActivity.activityName}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <div class="form-group">
+                                    <button class="btn btn-primary" [disabled]="!form.valid" (click)="formSubmitted(form)">Submit</button>
+                                </div> 
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <div id="detailModal" tabindex="-1" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h5 class="modal-title">{{ selectedElement?.clubName }}</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- <h1> Detail </h1> -->
+
+                    <div class="card">
+                        <img class="card-img-top" height="180px" width="100%" [src]="baseUrl+selectedElement?.clubImage" alt="Card image cap">
+                        <div class="card-body">
+                            <!-- <h5 class="card-title">{{ selectedElement?.activityName }}</h5> -->
+                            <p class="card-text">
+                                <span class="key">{{ startCase('description') }}</span> :
+                                <span class="value"> {{ selectedElement?.description }} </span>
+                            </p>
+                    
+                            <p class="card-text">
+                                <span class="key"> {{ startCase('email') }} </span> :
+                                <span class="value"> {{ selectedElement?.email }} </span>
+                            </p>
+                    
+                            <p class="card-text">
+                                <span class="key">{{ startCase('maxSize') }}</span> :
+                                <span class="value"> {{ selectedElement?.maxSize }} </span>
+                            </p>
+                    
+                            <p class="card-text">
+                                <span class="key">{{ startCase('Club Admin') }}</span>:
+                                <span>
+                                    <img [src]="baseUrl+selectedElement.user?.avatar" height="45px" width="45px" alt="">
+                                </span>
+                                <span class="value"> {{selectedElement.user?.firstName ? selectedElement.user?.firstName : selectedElement.user?.countryCode+ '-' +selectedElement.user?.phoneNumber}} </span>
+                            </p>
+                            
+                            <p class="card-text">
+                                <span class="key">{{ startCase('Location') }}</span>:
+                                <span class="value"> {{selectedElement?.lattitude +' | '+ selectedElement?.longitude }} </span>
+                            </p>
+                            
+                            <div class="activity col-md-6" *ngFor="let activity of selectedElement?.primaryActivity;">
+                                <h3>
+                                    Primary Activity
+                                </h3>
+                                <app-activity-detail [activity]="activity"></app-activity-detail>
+                            </div>
+                            
+                            <div class="activity col-md-6" *ngFor="let activity of selectedElement?.secondaryActivity;">
+                                <h3>
+                                    Secondary Activity
+                                </h3>
+                                <app-activity-detail [activity]="activity"></app-activity-detail>
+                            </div>
+                            
+                            <div class="activity col-md-6" *ngFor="let activity of selectedElement?.otherActivity;">
+                                <h3>
+                                     Other Activity
+                                </h3>
+                                <app-activity-detail [activity]="activity"></app-activity-detail>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer"> Created on | {{ selectedElement?.createdAt | date }} </div>
+            </div>
+        </div>
+    </div>
+</section>
